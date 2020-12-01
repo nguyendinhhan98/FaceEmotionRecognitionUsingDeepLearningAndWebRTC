@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="modules/mediasoupclient.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/EventEmitter/5.2.8/EventEmitter.min.js"></script>
+    <script src="RoomClient.js"></script>
+    <link rel="stylesheet" href="bootstrap-4.5.3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="index.css">
+    <script src="jquery/jquery.slim.min.js"></script>
+    <script src="popper/popper.min.js"></script>
+    <script src="bootstrap-4.5.3-dist/js/bootstrap.min.js"></script>
+    <script src="apex-chart.js"></script>
+  </head>
+
+  <body>
+      <div class="d-flex">
+        <div id="login" class="form-group m-auto card w-50 p-3">
+            Mã phòng: <input class="form-control" id="roomidInput" value="123" type="text" />
+            <br />
+            Tên: <input class="form-control mb-2" id="nameInput" value="nguoi_dung_" type="text" />
+            <div>
+              <button class="btn btn-primary w-25 m-auto mr-3 d-inline"
+              id="joinButton"
+              onclick="createRoom(nameInput.value, roomidInput.value)"
+            >
+              Tạo phòng
+            </button>
+              <button class="btn btn-info w-25 m-auto"
+                id="joinButton"
+                onclick="joinRoom(nameInput.value, roomidInput.value)"
+              >
+                Vào phòng
+              </button>
+            </div>
+          </div>
+          <div id="control" class="hidden card w-25 p-3">
+            <button id="exitButton" class="hidden btn btn-danger" onclick="rc.exit();resetDataEmotion()">Thoát phòng</button>
+            <br />
+            Thiết bị âm thanh:
+            <select class="form-control" id="audioSelect"></select>
+            <br />
+            Camera:
+            <select class="form-control" id="videoSelect"></select>
+            <br />
+            <button
+              id="startAudioButton"
+              class="hidden btn btn-primary"
+              onclick="rc.produce(RoomClient.mediaType.audio, audioSelect.value)"
+            >
+              Bật mic
+            </button>
+            <button
+              id="stopAudioButton"
+              class="hidden btn btn-warning"
+              onclick="rc.closeProducer(RoomClient.mediaType.audio)"
+            >
+              Tắc mic
+            </button>
+            <button
+              id="startVideoButton"
+              class="hidden btn btn-primary"
+              onclick="rc.produce(RoomClient.mediaType.video, videoSelect.value)"
+            >
+              Bật camera
+            </button>
+            <button
+              id="stopVideoButton"
+              class="hidden btn btn-warning"
+              onclick="rc.closeProducer(RoomClient.mediaType.video)"
+            >
+              Tắt camera
+            </button>
+            <button
+              id="startScreenButton"
+              class="hidden btn btn-primary"
+              onclick="rc.produce(RoomClient.mediaType.screen)"
+            >
+              Chia sẻ màn hình
+            </button>
+            <button
+              id="stopScreenButton"
+              class="hidden btn btn-warning"
+              onclick="rc.closeProducer(RoomClient.mediaType.screen)"
+            >
+              Tắt chia sẻ màn hình
+            </button>
+            <br />
+          </div>
+
+          <div id="localStream" class="hidden local-stream">
+            <h2 id="username">Your stream</h2><h3 id="is-host">(Chủ phòng)</h3>
+            <div id="localMedia"></div>
+          </div>
+
+          <div id="videoMedia" class="hidden card ml-2 w-75">
+            <h2>Remote stream</h2>
+            <div id="remoteVideos" class="container row"></div>
+            <div id="remoteAudios"></div>
+          </div>
+      </div>
+      <button class="ml-3 mt-4 btn btn-warning hidden" id="resetData" onclick="resetDataEmotion()">Clear data</button>
+      <div id="serverInfo" class="hidden m-3 text-info"></div>
+      <div class="card p-3 mt-4 hidden" id="chart"></div>
+  </body>
+  <footer>
+    <script src="index.js"></script>
+  </footer>
+</html>
